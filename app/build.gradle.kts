@@ -98,6 +98,10 @@ ktlint {
 android {
   namespace = "org.thoughtcrime.securesms"
 
+  defaultConfig {
+    applicationId = "io.github.timostrotmann.signal"
+  }
+
   buildToolsVersion = libs.versions.buildTools.get()
   compileSdkVersion = libs.versions.compileSdk.get()
   ndkVersion = libs.versions.ndk.get()
