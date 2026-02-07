@@ -10,10 +10,17 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
+    - name: Free Disk Space
+      run: |
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
     - name: Checkout code
       uses: actions/checkout@v4
       with:
@@ -29,11 +36,12 @@ jobs:
     - name: Grant execute permission to gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle (Debug APK)
-      run: ./gradlew :Signal-Android:assembleDebug
+    - name: Build with Gradle (Specific Variant)
+      # Wir bauen nur die Play-Production-Debug Variante, um Platz zu sparen
+      run: ./gradlew :Signal-Android:assemblePlayProdDebug
 
     - name: Upload APK as artifact
       uses: actions/upload-artifact@v4
       with:
         name: signal-debug-apk
-        path: app/build/outputs/apk/debug/*.apk
+        path: app/build/outputs/apk/playProd/debug/*.apk
