@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Free Disk Space
+    - name: Free Disk Space (Safe)
       run: |
         sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /usr/local/lib/android
         sudo rm -rf /opt/ghc
         sudo rm -rf "/usr/local/share/boost"
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        # Wir löschen NICHT /usr/local/lib/android, da dort das SDK liegt
 
     - name: Checkout code
       uses: actions/checkout@v4
@@ -37,7 +37,6 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle (Specific Variant)
-      # Wir bauen nur die Play-Production-Debug Variante, um Platz zu sparen
       run: ./gradlew :Signal-Android:assemblePlayProdDebug
 
     - name: Upload APK as artifact
